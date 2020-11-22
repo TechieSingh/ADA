@@ -1,0 +1,44 @@
+#include <stdio.h>
+int arr[100], tSum, n;
+void displaySubSet(int vis[]){
+ int i;
+ printf("\n{");
+ for(i=0;i<n;i++){
+if(vis[i])
+printf("%d,", arr[i]);
+ }
+ printf("}\n");
+}
+void findSubSet(int sum, int visited[], int iPrevInd)
+{
+int i;
+ if(sum == tSum)
+ displaySubSet(visited);
+ else if(sum>tSum)
+ return;
+ else
+ for( i=0;i<n; i++){
+ if(visited[i] || i<iPrevInd) continue;
+ if (sum < tSum) {
+ sum += arr[i];
+ visited[i] = 1;
+ findSubSet(sum, visited, i);
+ sum -= arr[i];
+ visited[i] = 0;
+ }
+ }
+}
+int main() {
+ int i,sub[100], vis[100];
+ printf("Enter the number of values:");
+ scanf("%d", &n);
+ printf("Enter the values matrix:");
+ for(i=0;i<n;i++)
+ {
+ scanf("%d", &arr[i]);
+ sub[i]=vis[i]=0;
+ }
+ printf("enter the sum to be obtain:");
+ scanf("%d", &tSum);
+ findSubSet(0, vis,0);
+}
