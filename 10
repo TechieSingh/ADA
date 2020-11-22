@@ -1,0 +1,53 @@
+#include <stdio.h>
+int cost[100][100], n, src, visited[100], pred[100];
+void displayMinDistFromSrc() {
+ int i;
+ printf("\n\nDistance from :");
+ for(i=0;i<n;i++)
+ printf("\nvertex %d -> %d is %d\n", src, i, cost[src][i]);
+}
+void updateSrcRowDistanceAfterVisitingToMinVertex(int minInd) {
+ int i, minDist = cost[src][minInd];
+ for(i=0;i<n;i++)
+ if(!visited[i])
+ if(minDist + cost[minInd][i]<cost[src][i])
+ {
+ cost[src][i]=minDist+cost[minInd][i];
+ pred[i]=minInd;
+ }
+}
+int findMinInSrcRowForNonVisitedVertex() {
+ int minInd = 0, i, minDist=9999;
+ for(i=0;i<n;i++)
+ if(cost[src][i]<minDist && !visited[i])
+ {
+ minDist=cost[src][i];
+ minInd=i;
+ }
+ return minInd;
+}
+void dijkshtra() {
+ int count = 1, i;
+ for(i=0; i<n; i++)
+ visited[i] = pred[i] = 0;
+ visited[src] = 1;
+ while(count<n-1) {
+ int minInd = findMinInSrcRowForNonVisitedVertex();
+ visited[minInd] = 1;
+ updateSrcRowDistanceAfterVisitingToMinVertex(minInd);
+ count++;
+ }
+ displayMinDistFromSrc();
+}
+int main() {
+ int i, j;
+ printf("Enter the number of vertices:");
+ scanf("%d", &n);
+ printf("Enter the cost matrix:");
+ for(i=0;i<n;i++)
+ for(j=0;j<n;j++)
+ scanf("%d", &cost[i][j]);
+ printf("enter the sourcevertx:");
+ scanf("%d", &src);
+ dijkshtra();
+}
