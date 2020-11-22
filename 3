@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <sys/time.h>
+int partition(int a[],int l,int r)
+{
+ int p=a[l];
+ int i=l,j=r,temp;
+ while(i<j)
+ {
+ while(a[i]<=p)
+ i++;
+ while(a[j]>p)
+ j--;
+ temp=a[i];a[i]=a[j];a[j]=temp;
+ }
+ temp=a[i];a[i]=a[j];a[j]=temp;
+ temp=a[j];a[j]=a[l];a[l]=temp;
+ return j;
+}
+void quicksort(int a[],int l,int r)
+{
+ int s;
+ if(l<r)
+ {
+ s=partition(a,l,r);
+ quicksort(a,l,s-1);
+ quicksort(a,s+1,r);
+ }
+}
+int main()
+{
+ int n,a[30],i;
+ printf("\n Enter number of elements:\n");
+ scanf("%d",&n);
+ printf("\n Elements:\n");
+ for(i=0;i<n;i++)
+ {a[i]=rand()%20+1;
+ printf("%d\t",a[i]);}
+ quicksort(a,0,n-1);
+ printf("\n After sorting:\n");
+ for(i=0;i<n;i++)
+ printf("%d\t",a[i]);
+ return 0;
+}
